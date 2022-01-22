@@ -2,7 +2,8 @@ package com.github.dk96
 
 interface VEBTree<IntType : Comparable<IntType>> {
 
-    /** The smallest value present in the Tree */
+    /** The smallest value present in the Tree
+     * This value is not stored anywhere else */
     val min: IntType?
 
     /** The greatest value present in the Tree */
@@ -14,16 +15,18 @@ interface VEBTree<IntType : Comparable<IntType>> {
     /** Delete this value from the Tree if present */
     fun delete(value: IntType)
 
-    /** Obtain the child tree at the given index */
-    fun getChildAt(index: Int): VEBTree<IntType>?
-
+    /** Determine whether this value is present */
     fun lookup(value: IntType)
-        : Boolean = VEBOperations.lookup(this, value)
+        : Boolean
 
-    fun findNext(value: IntType)
-        : IntType? = VEBOperations.findNext(this, value)
+    /** Find the successor for this value
+     * @return Successor or null if none */
+    fun successor(value: IntType)
+        : IntType?
 
-    fun findPrev(value: IntType)
-        : IntType? = VEBOperations.findPrev(this, value)
+    /** Find the predecessor for this value
+     * @return Predecessor or null if none */
+    fun predecessor(value: IntType)
+        : IntType?
 
 }
