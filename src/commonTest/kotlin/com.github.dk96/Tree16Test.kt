@@ -11,7 +11,7 @@ class Tree16Test {
 
     @BeforeTest
     fun testSetup() {
-        mTree = Tree16(UShort.MAX_VALUE.toInt() + 1)
+        mTree = Tree16.create()
     }
 
     @Test
@@ -53,25 +53,6 @@ class Tree16Test {
         assertEquals(20u, mTree.predecessor(25u))
         assertEquals(10u, mTree.predecessor(20u))
         assertEquals(null, mTree.predecessor(5u))
-    }
-
-    @Test
-    fun testDecomposeX() {
-        for (x in 0 until 256) {
-            val (c, i) = mTree.decomposeX(x.toUShort())
-            assertEquals(x, i.toInt())
-            assertEquals(0, c.toInt())
-        }
-        for (x in 256 until 512) {
-            val (c, i) = mTree.decomposeX(x.toUShort())
-            assertEquals(x - 256, i.toInt())
-            assertEquals(1, c.toInt())
-        }
-        for (x in 512 until 768) {
-            val (c, i) = mTree.decomposeX(x.toUShort())
-            assertEquals(x - 512, i.toInt())
-            assertEquals(2, c.toInt())
-        }
     }
 
 }
