@@ -1,32 +1,55 @@
 package com.github.dk96
 
-interface VEBTree<IntType : Comparable<IntType>> {
+import kotlin.math.log2
+import kotlin.math.roundToInt
+import kotlin.math.sqrt
+
+abstract class VEBTree<IntType : Comparable<IntType>>(
+    val size: Int
+) {
+    /** The Size of direct sub trees */
+    val subSize: Int = when {
+        size > 2 -> sqrt(size.toFloat()).roundToInt()
+        size == 2 -> 1
+        size == 1 -> 0
+        else -> throw IllegalArgumentException()
+    }
+
+    /** The word size of this tree */
+    val wordSize: Int = when {
+        size > 2 -> log2(size.toFloat()).roundToInt()
+        size == 2 -> 1
+        else -> 0
+    }
 
     /** The smallest value present in the Tree
      * This value is not stored anywhere else */
-    val min: IntType?
+    abstract val min: IntType?
 
     /** The greatest value present in the Tree */
-    val max: IntType?
+    abstract val max: IntType?
+
+    protected var summary
+        : ByteArray? = null
 
     /** Insert this value into the Tree if not present */
-    fun insert(value: IntType)
+    abstract fun insert(value: IntType)
 
     /** Delete this value from the Tree if present */
-    fun delete(value: IntType)
+    abstract fun delete(value: IntType)
 
     /** Determine whether this value is present */
-    fun lookup(value: IntType)
+    abstract fun lookup(value: IntType)
         : Boolean
 
     /** Find the successor for this value
      * @return Successor or null if none */
-    fun successor(value: IntType)
+    abstract fun successor(value: IntType)
         : IntType?
 
     /** Find the predecessor for this value
      * @return Predecessor or null if none */
-    fun predecessor(value: IntType)
+    abstract fun predecessor(value: IntType)
         : IntType?
 
 }
