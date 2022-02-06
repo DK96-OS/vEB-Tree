@@ -18,8 +18,8 @@ abstract class VEBTree<IntType : Comparable<IntType>>(
     }
 
     /** The word size of this tree */
-    val wordSize: Int = when {
-        size > 2 -> log2(size.toFloat()).roundToInt()
+    val wordSize: Short = when {
+        size > 2 -> log2(size.toFloat()).roundToInt().toShort()
         size == 2 -> 1
         else -> 0
     }
@@ -33,6 +33,7 @@ abstract class VEBTree<IntType : Comparable<IntType>>(
     var max: IntType? = null
         protected set
 
+    /** A summary array, enables searching for children */
     protected var mSummary
         : BooleanArray? = null
 
@@ -41,24 +42,31 @@ abstract class VEBTree<IntType : Comparable<IntType>>(
         : HashMap<Int, VEBTree<IntType>>? = null
 
     /** Insert this value into a subtree */
-    abstract fun insertSubtree(value: IntType)
+    protected abstract fun insertSubtree(
+        value: IntType
+    )
 
     /** Delete this value from the Tree if present */
-    abstract fun deleteFromSubtree(value: IntType)
+    protected abstract fun deleteFromSubtree(
+        value: IntType
+    ) : Boolean
 
     /** Determine whether this value is present */
-    abstract fun lookInSubtree(value: IntType)
-        : Boolean
+    protected abstract fun lookInSubtree(
+        value: IntType
+    ) : Boolean
 
-    /** Find the successor for this value
+    /** Search for the successor in a sub tree
      * @return Successor or null if none */
-    abstract fun successor(value: IntType)
-        : IntType?
+    protected abstract fun successorInSubtree(
+        value: IntType
+    ) : IntType?
 
-    /** Find the predecessor for this value
+    /** Search for the predecessor in a sub tree
      * @return Predecessor or null if none */
-    abstract fun predecessor(value: IntType)
-        : IntType?
+    protected abstract fun predecessorInSubtree(
+        value: IntType
+    ) : IntType?
 
     /** Insert this value into the Tree if not present */
     fun insert(value: IntType) {
@@ -79,7 +87,9 @@ abstract class VEBTree<IntType : Comparable<IntType>>(
 
     /** Delete a value from this tree
      * @return True if this tree is now empty, can be deleted */
-    fun delete(value: IntType): Boolean {
+    fun delete(
+        value: IntType
+    ) : Boolean {
         val min = min
         when {
             min == null -> return true
@@ -99,8 +109,9 @@ abstract class VEBTree<IntType : Comparable<IntType>>(
     }
 
     /** Determine whether this value is present */
-    fun lookup(value: IntType)
-        : Boolean = when (min) {
+    fun lookup(
+        value: IntType
+    ) : Boolean = when (min) {
         null -> false
         value -> true
         else -> lookInSubtree(value)
