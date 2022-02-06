@@ -3,8 +3,11 @@ package com.github.dk96
 import com.github.dk96.ushorts.IndexingFunctions.decomposeX
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
-class IndexingFunctionTest {
+/** Testing the DecomposeX functions
+ * Developed by DK96-OS : 2022 */
+class IndexingFunctionsDecomposeXTest {
 
 	@Test
 	fun testDecomposeUShortX16() {
@@ -78,6 +81,16 @@ class IndexingFunctionTest {
 	}
 
 	@Test
+	fun testDecomposeUShortIllegalArgs() {
+		assertFailsWith<IllegalArgumentException> {
+			decomposeX(10u, 0)
+		}
+		assertFailsWith<IllegalArgumentException> {
+			decomposeX(10u, -1)
+		}
+	}
+
+	@Test
 	fun testDecomposeIntX16() {
 		for (x in 0 until 256) {
 			val (c, i) = decomposeX(x, 16)
@@ -130,6 +143,16 @@ class IndexingFunctionTest {
 			val (c, i) = decomposeX(x, 2)
 			assertEquals(x - 2, i)
 			assertEquals(1, c)
+		}
+	}
+
+	@Test
+	fun testDecomposeIntIllegalArgs() {
+		assertFailsWith<IllegalArgumentException> {
+			decomposeX(10, 0)
+		}
+		assertFailsWith<IllegalArgumentException> {
+			decomposeX(10, -1)
 		}
 	}
 
